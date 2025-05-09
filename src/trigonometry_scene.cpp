@@ -1,11 +1,11 @@
 #include "trigonometry_scene.h"
 
-void TrigonometyScene::Initialize()
+void TrigonometryScene::Initialize()
 {
-	m_camera = new SceneCamera(Vector2{ static_cast<float>(m_width / 2, m_height /2) });
+	m_camera = new SceneCamera(Vector2{ static_cast<float>(m_width) / 2, m_height / 2.0f });
 }
 
-void TrigonometyScene::Update()
+void TrigonometryScene::Update()
 {
 }
 
@@ -33,7 +33,7 @@ Vector2 Vector2Normalize(const Vector2& v)
 	return Vector2{ v.x / l, v.y / l };
 }
 
-void TrigonometyScene::Draw()
+void TrigonometryScene::Draw()
 {
 	m_camera->BeginMode();
 
@@ -47,7 +47,7 @@ void TrigonometyScene::Draw()
 	int steps = 50;
 	for (int i = 0; i < steps; i++)
 	{
-		float theta = (i / (float) steps) * (2 * PI); //0 - 1
+		float theta = (i / (float)steps) * (2 * PI); //0 - 1
 		float x = cos(theta) * radius * 0.5f;
 		float y = sin(theta) * radius;
 
@@ -75,6 +75,6 @@ void TrigonometyScene::Draw()
 	m_camera->EndMode();
 }
 
-void TrigonometyScene::DrawGUI()
+void TrigonometryScene::DrawGUI()
 {
 }
