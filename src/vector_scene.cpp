@@ -1,7 +1,12 @@
 #include "vector_scene.h"
+#include "gui.h"
 #include "body.h"
+#include "world.h"
+#include "gravitation.h"
 #include "raymath.h"
 #include "math_utils.h"
+
+
 
 void VectorScene::Initialize()
 {
@@ -24,25 +29,55 @@ void VectorScene::Initialize()
 void VectorScene::Update()
 {
 	float dt = GetFrameTime();
+	GUI::Update();
 
-	float theta = randomf(0, 360);
-
-	if (IsMouseButtonPressed(0))
+	if (!GUI::mouseOverGUI && IsMouseButtonPressed(0))
 	{
 		Vector2 position = m_camera->ScreenToWorld(GetMousePosition());
 
 		for (int i = 0; i < 100; i++)
 		{
 			Body* body = m_world->CreateBody(position, 0.05f, ColorFromHSV(randomf(360), 1, 1));
-			float offset = randomf(0, 360);
-			float x = cos(theta);
-			float y = sin(theta);
+
+			float offset = randomf(-180, 180);
+			float theta = randomf(0, 360);
+			float x = cosf((theta + offset) * DEG2RAD);
+			float y = sinf((theta + offset) * DEG2RAD);
+
+			body->mass = GUI::massValue;
+			body->size = GUI::sizeValue;
+			body->gravityScale = GUI::gravityValue;
+			body->damping = GUI::dampingValue;
 			body->velocity = Vector2{ x, y } * randomf(1, 6);
+			body->restitution = GUI::restitutionValue;
 		}
 	}
 
-	m_world->Step(dt);
-
+	// apply collision
+	for (auto body : m_world->GetBodies())
+	{
+		if (body->position.y < -5)
+		{
+			body->position.y = -5;
+			body->velocity.y *= -body->restitution;
+		}
+		if (body->position.x < -9)
+		{
+			body->position.x = -9;
+			body->velocity *= -body->restitution;
+		}
+		if (body->position.y > 5)
+		{
+			body->position.y = 5;
+			body->velocity *= -body->restitution;
+		}
+		if (body->position.x > 9)
+		{
+			body->position.x = 9;
+			body->velocity *= -body->restitution;
+		}
+	}
+	
 	//// player control
 	//Vector2 input{ 0, 0 };
 	//if (IsKeyDown(KEY_A)) input.x = -1;
@@ -71,6 +106,14 @@ void VectorScene::Update()
 	//}
 }
 
+void VectorScene::FixedUpdate()
+{
+
+
+	//apply forces
+	m_world->Step(Scene::fixedTimestep);
+}
+
 void VectorScene::Draw()
 {
 	m_camera->BeginMode();
@@ -90,4 +133,5 @@ void VectorScene::Draw()
 
 void VectorScene::DrawGUI()
 {
+	GUI::Draw();
 }
