@@ -38,7 +38,7 @@ void GUI::Draw()
 		GuiGroupBox(Rectangle{ anchor04.x + 0, anchor04.y + 0, 256, 72 }, "World");
 		GuiSliderBar(Rectangle{ anchor03.x + 96, anchor03.y + 112, 120, 16 }, "Gravitation", GUI_DATA(World::gravitation), 0, 100);
 		GuiSlider(Rectangle{ anchor04.x + 96, anchor04.y + 40, 120, 16 }, "Gravity", GUI_DATA(World::gravity.y), -20, 20);
-		GuiSliderBar(Rectangle{ anchor03.x + 96, anchor03.y + 112, 160, 16 }, "Stiffness X", GUI_DATA(World::springStiffnessMultiplier), 0, 100);
+		GuiSliderBar(Rectangle{ anchor03.x + 96, anchor03.y + 160, 120, 16 }, "Stiffness X", GUI_DATA(World::springStiffnessMultiplier), 0, 100);
 		if (GuiDropdownBox(Rectangle{ anchor02.x + 96, anchor02.y + 136, 120, 24 }, "Dynamic;Kinematic;Static", &bodyTypeActive, bodyTypeEditMode)) bodyTypeEditMode = !bodyTypeEditMode;
 	}
 
