@@ -18,7 +18,8 @@ public:
 
 	Body* CreateBody(const Vector2& position, float size, const Color& color);
 	Body* CreateBody(Body::Type type, const Vector2& position, float mass, float size, const Color& color);
-	void Step(float timestep);
+	void RemoveBody(Body* body);
+	void Step(float timestep, Body* player);
 	void Draw(const Scene& scene);
 
 	void DestroyAll();

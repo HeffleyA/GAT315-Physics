@@ -30,7 +30,12 @@ Body* World::CreateBody(Body::Type type, const Vector2& position, float mass, fl
     return body;
 }
 
-void World::Step(float timestep)
+void World::RemoveBody(Body* body)
+{
+    body->size = 0;
+}
+
+void World::Step(float timestep, Body* player)
 {
     if (!simulate) return;
 
@@ -49,7 +54,7 @@ void World::Step(float timestep)
 
     m_contacts.clear();
     CreateContacts(m_bodies, m_contacts);
-    ResolveContacts(m_contacts);
+    ResolveContacts(m_contacts, player);
     SeparateContacts(m_contacts);
 }
 

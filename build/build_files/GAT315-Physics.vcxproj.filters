@@ -69,6 +69,9 @@
     <ClInclude Include="..\..\src\aabb.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\agario_scene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\main.cpp">
@@ -108,5 +111,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\collision.cpp" />
+    <ClCompile Include="..\..\src\agario_scene.cpp" />
   </ItemGroup>
 </Project>

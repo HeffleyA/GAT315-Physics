@@ -41,7 +41,7 @@ void Scene::DrawText(const std::string& text, const Vector2& world, int fontSize
 
 	rlPushMatrix();
 	rlTranslatef(screen.x, screen.y, 0);
-	rlScalef(1, -1, 1);  // flip back so text is upright
+	//rlScalef(1, -1, 1);  // flip back so text is upright
 	::DrawText(text.c_str(), 0, 0, fontSize, color);
 	rlPopMatrix();
 }

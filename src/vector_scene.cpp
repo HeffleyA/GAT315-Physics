@@ -111,7 +111,7 @@ void VectorScene::FixedUpdate()
 
 
 	//apply forces
-	m_world->Step(Scene::fixedTimestep);
+	//m_world->Step(Scene::fixedTimestep);
 }
 
 void VectorScene::Draw()

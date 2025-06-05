@@ -49,14 +49,17 @@ void SeparateContacts(contacts_t& contacts)
 {
 	for (auto contact : contacts)
 	{
-		float totalInverseMass = contact.bodyA->invMass + contact.bodyB->invMass; //<add inverse mass of both contact bodies>;
-		Vector2 separation = contact.normal * (contact.depth / totalInverseMass);
-		contact.bodyA->position = contact.bodyA->position + (separation * contact.bodyA->invMass); //<contact bodyA position + (separation * contact bodyA inverse mass)>;
-		contact.bodyB->position = contact.bodyB->position + (separation * contact.bodyB->invMass); //<contact bodyB position - (separation * contact bodyB inverse mass)>;
+		if (contact.bodyA != nullptr && contact.bodyB != nullptr)
+		{
+			float totalInverseMass = contact.bodyA->invMass + contact.bodyB->invMass; //<add inverse mass of both contact bodies>;
+			Vector2 separation = contact.normal * (contact.depth / totalInverseMass);
+			contact.bodyA->position = contact.bodyA->position + (separation * contact.bodyA->invMass); //<contact bodyA position + (separation * contact bodyA inverse mass)>;
+			contact.bodyB->position = contact.bodyB->position + (separation * contact.bodyB->invMass); //<contact bodyB position - (separation * contact bodyB inverse mass)>;
+		}
 	}
 }
 
-void ResolveContacts(contacts_t& contacts)
+void ResolveContacts(contacts_t& contacts, Body* player)
 {
 	for (auto& contact : contacts)
 	{
@@ -78,5 +81,35 @@ void ResolveContacts(contacts_t& contacts)
 			// apply impulses to both bodies
 			contact.bodyA->ApplyForce(impulse, Body::ForceMode::Impulse);
 		contact.bodyB->ApplyForce(Vector2Negate(impulse), Body::ForceMode::Impulse);
+
+		if (contact.bodyA == player)
+		{
+			if (contact.bodyA->size > contact.bodyB->size)
+			{
+				contact.bodyA->size += contact.bodyB->size * 0.5f;
+				contact.bodyB->size = 0;
+				contact.bodyB = nullptr;
+			}
+			else if (contact.bodyA->size < contact.bodyB->size)
+			{
+				contact.bodyA->size = 0.1f;
+				contact.bodyA->position = Vector2{ 0, 0 };
+			}
+		}
+
+		if (contact.bodyB == player)
+		{
+			if (contact.bodyB->size > contact.bodyA->size)
+			{
+				contact.bodyB->size += contact.bodyA->size * 0.5f;
+				contact.bodyA->size = 0;
+				contact.bodyA = nullptr;
+			}
+			else if (contact.bodyB->size < contact.bodyA->size)
+			{
+				contact.bodyB->size = 0.1f;
+				contact.bodyB->position = Vector2{ 0, 0 };
+			}
+		}
 	}
 }
